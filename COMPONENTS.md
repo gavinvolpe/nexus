@@ -1,144 +1,233 @@
-# Nexus Components Documentation
+# Nexus Components and Architecture
 
-This document provides a detailed overview of the Nexus framework's components, their relationships, and architectural decisions.
+## System Overview
+
+Nexus implements a dual-LLM architecture centered around a mentor-mentee relationship, where one LLM (mentor) guides and validates the work of another LLM (mentee). This approach ensures higher quality solutions through continuous feedback and validation.
 
 ## Core Components
 
-### 1. Access Pattern System (`pkg/types`, `pkg/impl`)
+### 1. Dual-Agent System
 
-#### Key Files:
-- `pkg/types/access_pattern.go`: Core interfaces for access patterns
-  - `IAccessNode`: Represents a node in the knowledge graph
-  - `IAccessEdge`: Defines connections between nodes
-  - `IAccessPattern`: Main interface for pattern management
+#### Task Execution Agent (Mentee LLM)
+- Primary code writer and task implementer
+- Proposes initial solutions and approaches
+- Implements changes based on mentor feedback
+- Explains reasoning behind implementation choices
+- Asks questions when uncertain
 
-- `pkg/impl/access_pattern.go`: Implementation of access pattern interfaces
-  - Handles pattern composition and decomposition
-  - Manages pattern evolution and learning
-  - Provides pattern matching and execution
+#### Guidance Agent (Mentor LLM)
+- Reviews proposed solutions
+- Identifies potential issues early
+- Explains architectural considerations
+- Suggests improvements and alternatives
+- Provides context from knowledge base
+- Has access to:
+  - Web search capabilities
+  - HTML inspection tools
+  - Graph database queries
+  - Pattern repository
 
-### 2. Model Context Protocol (`internal/mcp`)
+### 2. Knowledge Graph Database
+#### Structure
+- Access Patterns Storage
+  - Implementation approaches
+  - Success metrics
+  - Failure cases
+  - Performance characteristics
 
-#### Key Files:
-- `internal/mcp/types.go`: Core MCP type definitions
-  - Message structures
-  - Tool and resource definitions
-  - Protocol constants
+- Solution Flows
+  - Step-by-step methodologies
+  - Decision points
+  - Alternative approaches
+  - Error handling strategies
 
-- `internal/mcp/server.go`: MCP server implementation
-  - WebSocket connection handling
-  - Tool and resource management
-  - Request/response handling
+- Domain Knowledge
+  - Best practices
+  - Common pitfalls
+  - Tool usage patterns
+  - Framework-specific guidelines
 
-- `internal/mcp/client.go`: MCP client implementation
-  - Connection management
-  - Tool calling
-  - Resource access
+#### Query System
+- Pattern matching
+- Similarity search
+- Context-aware retrieval
+- Relevance ranking
 
-### 3. Model Integration (`internal/models`)
+#### Knowledge Evolution
+- Pattern refinement
+- Success tracking
+- Usage statistics
+- Automated updates
 
-#### Key Files:
-- `internal/models/base.go`: Base model implementation
-  - Common model functionality
-  - Configuration management
-  - Token counting
+### 3. Web Content Analysis
+#### Inspection Tools
+- HTML source viewer
+- DOM structure analyzer
+- Text content extractor
+- Markdown converter
 
-- `internal/models/groq.go`: Groq model integration
-  - API communication
-  - Response handling
-  - Tool registration
+#### Search Integration
+- Focused web searches
+- Result filtering
+- Content relevance scoring
+- Source credibility checking
 
-- `internal/models/ollama.go`: Ollama model integration
-  - Local model management
-  - Stream handling
-  - Tool support
+### 4. Access Pattern System
+#### Pattern Discovery
+- Solution analysis
+- Pattern extraction
+- Performance profiling
+- Reusability assessment
 
-- `internal/models/mcp.go`: MCP model integration
-  - MCP capability management
-  - Tool and resource bridging
-  - Cross-model communication
+#### Pattern Optimization
+- Execution path analysis
+- Resource usage optimization
+- Parallel execution opportunities
+- Error handling improvements
 
-### 4. Prompt System (`prompts`)
+#### Pattern Storage
+- Efficient indexing
+- Quick retrieval
+- Version control
+- Pattern composition
 
-#### Key Files:
-- `prompts/fs.go`: Filesystem-based prompt storage
-  - Prompt loading and caching
-  - File watching
-  - Metadata management
+### 5. Collaboration Framework
+#### Agent Communication
+- Message passing system
+- State synchronization
+- Priority management
+- Conflict resolution
 
-- `prompts/utils.go`: Prompt utilities
-  - Variable substitution
-  - Template rendering
-  - Context management
+#### Task Orchestration
+- Workflow management
+- Task distribution
+- Progress monitoring
+- Result aggregation
 
-## Component Relationships
+#### Solution Refinement
+- Performance analysis
+- Solution comparison
+- Iterative improvement
+- Quality assurance
+
+## Data Flow
 
 ```mermaid
 graph TD
-    A[Access Pattern System] --> B[Model Context Protocol]
-    B --> C[Model Integration]
-    C --> D[Prompt System]
-    B --> D
-    A --> D
+    A[Task Input] --> B[Task Execution Agent]
+    B --> C[Initial Solution]
+    C --> D[Guidance Agent]
+    C --> E[Access Pattern Creation]
+    D --> F[Feedback and Validation]
+    E --> G[Pattern Storage]
+    F --> H[Solution Refinement]
+    H --> I[Knowledge Graph Update]
+    I --> J[Future Task Optimization]
 ```
 
-## Integration Points
+## Component Interactions
 
-1. **Access Patterns ↔ MCP**
-   - Access patterns guide tool selection
-   - MCP provides execution capabilities
-   - Shared context management
+### Task Execution Flow
+1. Task received by system
+2. Mentee LLM proposes initial approach
+3. Mentor LLM reviews and provides feedback
+4. Mentee implements solution with guidance
+5. Mentor validates implementation
+6. Solution stored in knowledge graph
 
-2. **MCP ↔ Models**
-   - Models expose capabilities through MCP
-   - Tool registration and execution
-   - Resource sharing
+### Knowledge Acquisition
+1. Mentor LLM identifies knowledge gaps
+2. Searches web resources and knowledge graph
+3. Extracts relevant information
+4. Validates against existing patterns
+5. Guides mentee in applying new knowledge
 
-3. **Models ↔ Prompts**
-   - Dynamic prompt generation
-   - Context-aware template rendering
-   - Variable management
+### Pattern Storage
+1. Successful solutions analyzed
+2. Patterns extracted and validated
+3. Stored in graph database with metadata
+4. Linked to related patterns and contexts
+5. Tagged for efficient retrieval
 
-## Design Decisions
+## Implementation Details
 
-1. **Modularity First**
-   - Components are loosely coupled
-   - Interfaces define clear boundaries
-   - Easy to extend and modify
+### Agent Communication
+```go
+type MentorAgent interface {
+    // Guidance capabilities
+    ReviewSolution(solution Solution) Review
+    ProvideContext(query Query) Context
+    SearchKnowledge(topic Topic) []Pattern
+    ValidateImplementation(code Code) ValidationResult
+}
 
-2. **Protocol Standardization**
-   - MCP as the primary communication protocol
-   - Consistent message formats
-   - Standardized error handling
+type MenteeAgent interface {
+    // Implementation capabilities
+    ProposeSolution(task Task) Solution
+    ImplementCode(design Design) Code
+    ExplainReasoning(decision Decision) Explanation
+    ApplyFeedback(review Review) Improvement
+}
 
-3. **Resource Abstraction**
-   - Universal resource interface
-   - Pluggable storage backends
-   - Flexible metadata system
+type AgentCollaboration interface {
+    // Collaboration methods
+    InitiateDiscussion(topic Topic) Discussion
+    ShareContext(context Context)
+    ReachConsensus(proposals []Proposal) Decision
+}
 
-4. **Pattern-Based Access**
-   - Knowledge graph structure
-   - Composable patterns
-   - Learning capabilities
+type Agent interface {
+    // Core agent functionality
+    Execute(task Task) Result
+    Analyze(solution Solution) Analysis
+    Optimize(analysis Analysis) Improvement
+    Collaborate(agents []Agent) Solution
+}
 
-## Future Considerations
+type SpecializedAgent interface {
+    Agent
+    // Specialized capabilities
+    GetExpertise() Domain
+    ProvideFeedback(solution Solution) Feedback
+}
+```
 
-1. **Scalability**
-   - Distributed pattern matching
-   - Load balancing for MCP servers
-   - Caching strategies
+### Knowledge Graph
+```go
+type KnowledgeGraph interface {
+    // Graph operations
+    StorePattern(pattern Pattern) PatternID
+    QueryPatterns(criteria Criteria) []Pattern
+    UpdatePattern(id PatternID, update Update) bool
+    FindSimilar(pattern Pattern) []Pattern
+    
+    // Analytics
+    TrackUsage(pattern Pattern)
+    CalculateEffectiveness(pattern Pattern) Metrics
+    SuggestImprovements(pattern Pattern) []Suggestion
+}
+```
 
-2. **Security**
-   - Authentication/authorization
-   - Resource access control
-   - Secure communication
+### Web Extraction
+```go
+type HTMLQuery interface {
+    // Query capabilities
+    Select(selector string) []Element
+    Extract(pattern Pattern) Data
+    Validate(data Data) bool
+    Cache(result Result, duration time.Duration)
+}
+```
 
-3. **Monitoring**
-   - Pattern usage analytics
-   - Performance metrics
-   - Error tracking
+### Access Patterns
+```go
+type AccessPattern interface {
+    // Pattern management
+    Execute() Result
+    Optimize() Improvement
+    Store() PatternID
+    Retrieve(id PatternID) Pattern
+}
+```
 
-4. **Extensions**
-   - Additional model support
-   - Custom tool types
-   - Pattern repositories
+

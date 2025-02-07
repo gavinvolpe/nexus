@@ -246,11 +246,3 @@ func DataFS() fs.FS {
 func TemplatesFS() fs.FS {
 	return TemplatesDir
 }
-
-func openPromptTemplate(name string) (fs.File, error) {
-	return TemplatesDir.Open(name)
-}
-
-func openDataFile(name string) (fs.File, error) {
-	return DataDir.Open(name)
-}

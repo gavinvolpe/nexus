@@ -23,10 +23,12 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/bytedance/sonic"
+	"github.com/bytedance/sonic/decoder"
 )
 
 // GroqModel implements IModel for Groq
@@ -90,7 +92,7 @@ func (m *GroqModel) Complete(ctx context.Context, messages []Message) (*ModelRes
 		TopP:        m.config.TopP,
 	}
 
-	body, err := json.Marshal(req)
+	body, err := sonic.Marshal(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
 	}
@@ -115,17 +117,17 @@ func (m *GroqModel) Complete(ctx context.Context, messages []Message) (*ModelRes
 	}
 
 	var groqResp GroqResponse
-	if err := json.NewDecoder(resp.Body).Decode(&groqResp); err != nil {
+	if err := decoder.NewStreamDecoder(resp.Body).Decode(&groqResp); err != nil {
 		return nil, fmt.Errorf("failed to decode response: %w", err)
 	}
 
 	return &ModelResponse{
 		ID:                groqResp.ID,
-		Created:          groqResp.Created,
-		Model:            groqResp.Model,
+		Created:           groqResp.Created,
+		Model:             groqResp.Model,
 		SystemFingerprint: groqResp.SystemFingerprint,
-		Choices:          groqResp.Choices,
-		Usage:            groqResp.Usage,
+		Choices:           groqResp.Choices,
+		Usage:             groqResp.Usage,
 	}, nil
 }
 
@@ -143,7 +145,7 @@ func (m *GroqModel) Stream(ctx context.Context, messages []Message) (<-chan Mode
 		TopP:        m.config.TopP,
 	}
 
-	body, err := json.Marshal(req)
+	body, err := sonic.Marshal(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
 	}
@@ -189,17 +191,17 @@ func (m *GroqModel) Stream(ctx context.Context, messages []Message) (<-chan Mode
 			}
 
 			var groqResp GroqResponse
-			if err := json.Unmarshal(data, &groqResp); err != nil {
+			if err := sonic.Unmarshal(data, &groqResp); err != nil {
 				continue
 			}
 
 			response := ModelResponse{
 				ID:                groqResp.ID,
-				Created:          groqResp.Created,
-				Model:            groqResp.Model,
+				Created:           groqResp.Created,
+				Model:             groqResp.Model,
 				SystemFingerprint: groqResp.SystemFingerprint,
-				Choices:          groqResp.Choices,
-				Usage:            groqResp.Usage,
+				Choices:           groqResp.Choices,
+				Usage:             groqResp.Usage,
 			}
 
 			select {
