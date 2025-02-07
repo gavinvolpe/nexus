@@ -1,0 +1,609 @@
+{
+  "staticPrompts": [
+    {
+      "prompt": "Provide a detailed recommendation for the project’s folder structure and file organization. The structure should include a main directory with subdirectories for source code, tests, documentation, etc., the locations of the README.md and NOTES.md files, and any additional folders for dependencies or build artifacts. Explain how this structure will support the project’s scalability, maintainability, and ease of navigation for future development.",
+      "vars": {},
+      "purpose": "This prompt ensures that the Junior Developer receives clear instructions for setting up a well-organized project directory—a critical foundation for managing a large-scale project.",
+      "target": "junior",
+      "when": "setup"
+    },
+    {
+      "prompt": "Outline a comprehensive testing strategy for the project. Detail how to set up automated tests for each module, provide example test cases, integrate tests into the build process, and document the results. Remind the developer to update the NOTES.md with outcomes and any issues discovered.",
+      "vars": {},
+      "purpose": "This prompt establishes robust testing practices, ensuring that every new feature or change is validated and that test outcomes are clearly documented.",
+      "target": "junior",
+      "when": "testing"
+    },
+    {
+      "prompt": "Provide detailed instructions for updating the README.md as the project progresses. The README.md should list completed tasks (with check-offs), remaining tasks or milestones, and indicate where key project components (like tests and documentation) are located. Ensure it is updated after every major change or milestone.",
+      "vars": {},
+      "purpose": "This prompt reinforces maintaining an up-to-date project roadmap, which is essential for tracking progress and guiding future development.",
+      "target": "junior",
+      "when": "progress"
+    },
+    {
+      "prompt": "Instruct on how to effectively use the NOTES.md file. The NOTES.md should capture the reasoning behind specific build patterns, document any encountered issues along with detailed explanations of why they occurred and how they were resolved, and record key insights or lessons learned. Provide a suggested format for consistency.",
+      "vars": {},
+      "purpose": "This prompt ensures that crucial contextual details and problem-solving insights are preserved for troubleshooting and future reference.",
+      "target": "junior",
+      "when": "documentation"
+    },
+    {
+      "prompt": "After each code change or milestone, instruct the developer to run the relevant tests and record the outcomes. Then, have them update the README.md (to mark tasks as completed) and the NOTES.md (to log any issues, decisions, or changes). Request a brief summary report and provide feedback to confirm that the updates and code meet the project requirements before proceeding.",
+      "vars": {},
+      "purpose": "This prompt sets up a recurring validation process, ensuring continuous quality checks and consistent communication between development stages.",
+      "target": "senior",
+      "when": "review"
+    },
+    {
+      "prompt": "Upon reaching a major milestone, summarize the accomplishments and update the README.md with a milestone review. Additionally, document any challenges or key learnings in the NOTES.md and outline the next set of tasks or improvements based on the current project state.",
+      "vars": {},
+      "purpose": "This prompt facilitates regular milestone reviews and strategic planning, ensuring the project stays on track and adapts to any emerging challenges.",
+      "target": "senior",
+      "when": "milestone"
+    },
+    {
+      "prompt": "For the final review, verify that the README.md accurately reflects the project status—including a full list of completed milestones and any remaining tasks—and that the NOTES.md contains thorough documentation of the build patterns, issues, decisions, and solutions. Provide final feedback and recommendations for future improvements, serving as a retrospective for the project.",
+      "vars": {},
+      "purpose": "This prompt ensures a comprehensive project wrap-up, capturing lessons learned and setting the stage for future development cycles.",
+      "target": "senior",
+      "when": "final"
+    }
+  ],
+  "dynamicPrompts": [
+    {
+      "prompt": "Please review the provided README.md file for project {{projectName}}. Extract and summarize all key details including folder structure ideas, build patterns, infrastructure needs, dependencies, and requirements. List these elements clearly, and note any ambiguous points that may need further clarification.",
+      "vars": {
+        "projectName": "<project name>",
+        "additionalNotes": "<any additional notes>"
+      },
+      "purpose": "To extract the raw ideas and requirements from the README.md, laying the groundwork for a structured project plan.",
+      "target": "senior",
+      "when": "analysis"
+    },
+    {
+      "prompt": "Based on the extracted details from the README.md for project {{projectName}}, generate a high-level, step-by-step project breakdown. Include a recommended folder structure, build patterns, infrastructure needs, chronological milestones, and a list of dependencies. Please format the output as a numbered list or timeline.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To synthesize the initial ideas into a structured roadmap that guides the overall development process.",
+      "target": "senior",
+      "when": "planning"
+    },
+    {
+      "prompt": "Rewrite the initial ideas from the README.md into a detailed project plan with structured milestones and actionable tasks. For each milestone, list clear goals, necessary tasks, dependencies, and suggest deadlines or priorities. Format the output in an organized, numbered list.",
+      "vars": {
+        "deadlineSuggestions": "<optional deadlines>",
+        "milestoneCount": "<number of milestones>"
+      },
+      "purpose": "To convert free-form ideas into a comprehensive project plan with clear checkpoints.",
+      "target": "senior",
+      "when": "scheduling"
+    },
+    {
+      "prompt": "Provide a detailed recommendation for the project’s folder structure and file organization for {{projectName}}. Include a main directory with subdirectories for source code, tests, and documentation, specify the locations of the README.md and NOTES.md, and include any additional folders required for dependencies or build artifacts. Explain how this structure will enhance scalability and maintainability.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To ensure that the project is set up with a clear and logical file organization, which is essential for long-term maintainability.",
+      "target": "junior",
+      "when": "setup"
+    },
+    {
+      "prompt": "Outline a comprehensive testing strategy for project {{projectName}}. Detail the setup for automated tests per module, provide example test cases, explain how to integrate these tests into the build process, and describe how to document test results. Remind the developer to update NOTES.md with test outcomes and any issues encountered.",
+      "vars": {
+        "projectName": "<project name>",
+        "testFramework": "<testing framework if any>"
+      },
+      "purpose": "To establish robust testing practices that ensure stability and reliability as the project evolves.",
+      "target": "junior",
+      "when": "testing"
+    },
+    {
+      "prompt": "Provide detailed instructions for updating the README.md as project {{projectName}} evolves. The README.md should reflect completed tasks (with check-offs), list remaining tasks or milestones, and indicate where key components (such as tests and documentation) are located. Ensure it is updated after each major change or milestone.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To maintain a current and comprehensive project roadmap that tracks progress and guides development.",
+      "target": "junior",
+      "when": "progress"
+    },
+    {
+      "prompt": "Instruct on using the NOTES.md file effectively for project {{projectName}}. The file should record the rationale behind selected build patterns, document any issues along with detailed explanations of their causes and resolutions, and capture key insights or lessons learned. Provide a suggested format for consistent entries.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To ensure that important contextual information and decision rationales are well-documented for future troubleshooting and reference.",
+      "target": "junior",
+      "when": "documentation"
+    },
+    {
+      "prompt": "After each code change or milestone in project {{projectName}}, instruct the developer to run the relevant tests and record the results. Then, update the README.md to mark completed tasks and the NOTES.md to log any issues or decisions made. Provide a brief summary report and request feedback to confirm that the changes meet project requirements.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To establish a continuous validation process that ensures code quality and clear documentation throughout the project.",
+      "target": "senior",
+      "when": "review"
+    },
+    {
+      "prompt": "When a major milestone is reached in project {{projectName}}, summarize the accomplishments and update the README.md with a milestone review. Additionally, document any challenges or key learnings in the NOTES.md and outline the next set of tasks or improvements based on the project’s current state.",
+      "vars": {
+        "projectName": "<project name>",
+        "milestone": "<milestone identifier>"
+      },
+      "purpose": "To ensure regular milestone reviews and effective planning for subsequent phases of the project.",
+      "target": "senior",
+      "when": "milestone"
+    },
+    {
+      "prompt": "For the final review of project {{projectName}}, verify that the README.md accurately reflects all completed milestones and any outstanding tasks, and ensure that the NOTES.md contains comprehensive documentation of build patterns, issues, decisions, and solutions. Provide final feedback and recommendations for future improvements, serving as a retrospective for the project.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To conclude the project with a thorough review and documentation of lessons learned, guiding future development efforts.",
+      "target": "senior",
+      "when": "final"
+    },
+    {
+      "prompt": "Please review the provided README.md file for project {{projectName}}. Extract and summarize all key details including folder structure ideas, build patterns, infrastructure needs, dependencies, and requirements. List these elements clearly, and note any ambiguous points that may need further clarification.",
+      "vars": {
+        "projectName": "<project name>",
+        "additionalNotes": "<any additional notes>"
+      },
+      "purpose": "To extract the raw ideas and requirements from the README.md, laying the groundwork for a structured project plan.",
+      "target": "senior",
+      "when": "analysis"
+    },
+    {
+      "prompt": "Based on the extracted details from the README.md for project {{projectName}}, generate a high-level, step-by-step project breakdown. Include a recommended folder structure, build patterns, infrastructure needs, chronological milestones, and a list of dependencies. Please format the output as a numbered list or timeline.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To synthesize the initial ideas into a structured roadmap that guides the overall development process.",
+      "target": "senior",
+      "when": "planning"
+    },
+    {
+      "prompt": "Rewrite the initial ideas from the README.md into a detailed project plan with structured milestones and actionable tasks. For each milestone, list clear goals, necessary tasks, dependencies, and suggest deadlines or priorities. Format the output in an organized, numbered list.",
+      "vars": {
+        "deadlineSuggestions": "<optional deadlines>",
+        "milestoneCount": "<number of milestones>"
+      },
+      "purpose": "To convert free-form ideas into a comprehensive project plan with clear checkpoints.",
+      "target": "senior",
+      "when": "scheduling"
+    },
+    {
+      "prompt": "Provide a detailed recommendation for the project’s folder structure and file organization for {{projectName}}. Include a main directory with subdirectories for source code, tests, and documentation, specify the locations of the README.md and NOTES.md, and include any additional folders required for dependencies or build artifacts. Explain how this structure will enhance scalability and maintainability.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To ensure that the project is set up with a clear and logical file organization, which is essential for long-term maintainability.",
+      "target": "junior",
+      "when": "setup"
+    },
+    {
+      "prompt": "Outline a comprehensive testing strategy for project {{projectName}}. Detail the setup for automated tests per module, provide example test cases, explain how to integrate these tests into the build process, and describe how to document test results. Remind the developer to update the NOTES.md with test outcomes and any issues encountered.",
+      "vars": {
+        "projectName": "<project name>",
+        "testFramework": "<testing framework if any>"
+      },
+      "purpose": "To establish robust testing practices that ensure stability and reliability as the project evolves.",
+      "target": "junior",
+      "when": "testing"
+    },
+    {
+      "prompt": "Provide detailed instructions for updating the README.md as project {{projectName}} evolves. The README.md should reflect completed tasks (with check-offs), list remaining tasks or milestones, and indicate where key components (such as tests and documentation) are located. Ensure it is updated after each major change or milestone.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To maintain a current and comprehensive project roadmap that tracks progress and guides development.",
+      "target": "junior",
+      "when": "progress"
+    },
+    {
+      "prompt": "Instruct on using the NOTES.md file effectively for project {{projectName}}. The file should record the rationale behind selected build patterns, document any issues along with detailed explanations of their causes and resolutions, and capture key insights or lessons learned. Provide a suggested format for consistent entries.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To ensure that important contextual information and decision rationales are well-documented for future troubleshooting and reference.",
+      "target": "junior",
+      "when": "documentation"
+    },
+    {
+      "prompt": "After each code change or milestone in project {{projectName}}, instruct the developer to run the relevant tests and record the results. Then, update the README.md to mark completed tasks and the NOTES.md to log any issues or decisions made. Provide a brief summary report and request feedback to confirm that the changes meet project requirements.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To establish a continuous validation process that ensures code quality and clear documentation throughout the project.",
+      "target": "senior",
+      "when": "review"
+    },
+    {
+      "prompt": "When a major milestone is reached in project {{projectName}}, summarize the accomplishments and update the README.md with a milestone review. Additionally, document any challenges or key learnings in the NOTES.md and outline the next set of tasks or improvements based on the project’s current state.",
+      "vars": {
+        "projectName": "<project name>",
+        "milestone": "<milestone identifier>"
+      },
+      "purpose": "To ensure regular milestone reviews and effective planning for subsequent phases of the project.",
+      "target": "senior",
+      "when": "milestone"
+    },
+    {
+      "prompt": "For the final review of project {{projectName}}, verify that the README.md accurately reflects all completed milestones and any outstanding tasks, and ensure that the NOTES.md contains comprehensive documentation of build patterns, issues, decisions, and solutions. Provide final feedback and recommendations for future improvements, serving as a retrospective for the project.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To conclude the project with a thorough review and documentation of lessons learned, guiding future development efforts.",
+      "target": "senior",
+      "when": "final"
+    },
+    {
+      "prompt": "If any sections of the README.md for project {{projectName}} are ambiguous or unclear, identify these sections and generate a list of specific questions or clarifications that need to be addressed. Propose possible interpretations where applicable.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To highlight unclear requirements and prompt further clarification, ensuring that the project plan is based on well-defined expectations.",
+      "target": "senior",
+      "when": "clarification"
+    },
+    {
+      "prompt": "Analyze the README.md for project {{projectName}} and identify any dependencies or requirements that appear to be incomplete or missing. Generate a list of open questions regarding these dependencies and suggest potential sources for resolving them.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To address gaps in dependency information, ensuring that all necessary components are properly identified and clarified.",
+      "target": "senior",
+      "when": "dependency"
+    },
+    {
+      "prompt": "For project {{projectName}}, if integration with external systems or services is mentioned or implied, outline the necessary API endpoints, authentication methods, and error handling strategies required. Highlight any areas that need further input or clarification regarding external dependencies.",
+      "vars": {
+        "projectName": "<project name>",
+        "externalSystems": "<list external systems if applicable>"
+      },
+      "purpose": "To ensure that integration points with external systems are well-defined and that any ambiguities are addressed early in the project.",
+      "target": "senior",
+      "when": "integration"
+    },
+    {
+      "prompt": "Document any unexpected technical obstacles encountered during the development of project {{projectName}}. Include error messages, steps taken to troubleshoot, and proposed solutions. If these obstacles require adjustments to the project plan or dependencies, outline the necessary changes.",
+      "vars": {
+        "projectName": "<project name>",
+        "errorDescription": "<detailed error description>"
+      },
+      "purpose": "To capture unforeseen issues and their resolutions, ensuring that technical challenges are addressed systematically and inform future planning.",
+      "target": "junior",
+      "when": "obstacle"
+    },
+    {
+      "prompt": "Outline any performance or scalability concerns identified during the planning or early development of project {{projectName}}. Provide strategies to mitigate these concerns, including potential load testing scenarios and optimization techniques, and list any additional resources needed.",
+      "vars": {
+        "projectName": "<project name>",
+        "concerns": "<list of performance concerns>"
+      },
+      "purpose": "To proactively address performance issues, ensuring that the project can scale effectively and operate efficiently under load.",
+      "target": "senior",
+      "when": "performance"
+    },
+    {
+      "prompt": "For project {{projectName}}, provide guidelines for maintaining high code quality and adhering to coding style standards. Include recommendations for linting tools, formatting rules, and a process for regular code reviews. Suggest any training or resources that might help the team uphold these standards.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To establish best practices for code quality and consistency, which are critical for long-term maintainability and collaboration.",
+      "target": "senior",
+      "when": "quality"
+    },
+    {
+      "prompt": "Outline a strategy for managing version control in project {{projectName}}, including how to handle merge conflicts, branch management, and version tagging. Provide clear guidelines on using tools like Git, and describe the process for conducting code reviews before merging changes.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To ensure effective version control management, minimizing conflicts and maintaining a clean code history throughout the project.",
+      "target": "senior",
+      "when": "versioning"
+    },
+    {
+      "prompt": "Develop a contingency plan for project {{projectName}}. This should include rollback procedures for failed deployments, backup strategies, and guidelines for restoring previous versions in the event of critical failures. Specify how these procedures will be communicated within the team.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To prepare for potential failures by establishing clear rollback and recovery procedures, ensuring project stability and risk management.",
+      "target": "senior",
+      "when": "contingency"
+    },
+    {
+      "prompt": "Implement a process to ensure that all documentation for project {{projectName}}, including the README.md and NOTES.md, remains consistent with the current state of the project. Outline steps for periodic reviews, version updates, and synchronization between the codebase and documentation. Describe actions to take if discrepancies are found.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To maintain documentation accuracy and alignment with the evolving project, which is essential for clarity and future maintenance.",
+      "target": "senior",
+      "when": "doccheck"
+    },
+    {
+      "prompt": "If project {{projectName}} receives user or stakeholder feedback during development, document the feedback in detail. Propose iterative improvements to the project plan based on this feedback, and suggest adjustments to the existing milestones as necessary. Include a plan for integrating this feedback into the workflow.",
+      "vars": {
+        "projectName": "<project name>",
+        "feedbackSummary": "<summary of feedback>"
+      },
+      "purpose": "To ensure that user or stakeholder input is systematically incorporated into the project, allowing for iterative improvements and adaptability.",
+      "target": "senior",
+      "when": "feedback"
+    },
+    {
+      "prompt": "Analyze project {{projectName}} for any potential conflicts between different dependency versions specified in the README.md or configuration files. Provide recommendations for resolving these conflicts, and detail any necessary steps to ensure compatibility across all modules.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "To address and resolve dependency version conflicts early, ensuring smooth integration and compatibility across the project.",
+      "target": "senior",
+      "when": "dependencyConflict"
+    },
+    {
+      "prompt": "Identify and document any security or compliance requirements mentioned in the README.md for project {{projectName}}. Outline the necessary measures to ensure data protection, secure coding practices, and adherence to regulatory standards. If further research is needed, specify the areas requiring investigation.",
+      "vars": {
+        "projectName": "<project name>",
+        "complianceStandards": "<applicable standards>"
+      },
+      "purpose": "To ensure that security and compliance considerations are integrated into the project plan, safeguarding data and meeting regulatory obligations.",
+      "target": "senior",
+      "when": "security"
+    }
+  ],
+"promptSelector": [
+    {
+      "scenario": "Initial README Analysis",
+      "prompt": "Please review the provided README.md file for project {{projectName}}. Extract and summarize all key details including folder structure ideas, build patterns, infrastructure needs, dependencies, and requirements. List these elements clearly, and note any ambiguous points that may need further clarification.",
+      "vars": {
+        "projectName": "<project name>",
+        "additionalNotes": "<any additional notes>"
+      },
+      "purpose": "Extract the raw ideas and requirements from the README.md to form the foundation for a structured project plan.",
+      "target": "senior",
+      "when": "analysis",
+      "guidance": "Examine the README.md carefully. Identify and highlight incomplete ideas or ambiguous requirements that may require follow-up discussions."
+    },
+    {
+      "scenario": "High-Level Project Breakdown",
+      "prompt": "Based on the extracted details from the README.md for project {{projectName}}, generate a high-level, step-by-step project breakdown. Include a recommended folder structure, build patterns, infrastructure needs, chronological milestones, and a list of dependencies. Format the output as a numbered list or timeline.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Synthesize initial ideas into a clear, structured roadmap that outlines major milestones and dependencies.",
+      "target": "senior",
+      "when": "planning",
+      "guidance": "Focus on clarity and structure. Ensure that major milestones and dependencies are prominently outlined to guide subsequent planning."
+    },
+    {
+      "scenario": "Detailed Milestone Planning",
+      "prompt": "Rewrite the initial ideas from the README.md into a detailed project plan with structured milestones and actionable tasks. For each milestone, list clear goals, necessary tasks, dependencies, and suggested deadlines or priorities. Format the output in an organized, numbered list.",
+      "vars": {
+        "milestoneCount": "<number of milestones>",
+        "deadlineSuggestions": "<optional deadlines>"
+      },
+      "purpose": "Convert free-form ideas into a concrete, actionable plan with clear checkpoints.",
+      "target": "senior",
+      "when": "scheduling",
+      "guidance": "Break the project into realistic milestones. Include dependencies and deadlines where possible to ensure a manageable progression."
+    },
+    {
+      "scenario": "Project Folder Structure Setup",
+      "prompt": "Provide a detailed recommendation for the project’s folder structure and file organization for {{projectName}}. Include a main directory with subdirectories for source code, tests, documentation, etc., and specify the locations for README.md and NOTES.md. Explain how this structure will enhance scalability and maintainability.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Establish a well-organized file system that supports long-term maintainability and scalability.",
+      "target": "junior",
+      "when": "setup",
+      "guidance": "Consider both current and future project needs. Ensure the structure promotes modularity and ease of navigation."
+    },
+    {
+      "scenario": "Automated Testing Strategy",
+      "prompt": "Outline a comprehensive testing strategy for project {{projectName}}. Detail how to set up automated tests per module, provide example test cases, explain how tests integrate into the build process, and describe how to document test results. Remind the developer to update the NOTES.md with outcomes and any issues encountered.",
+      "vars": {
+        "projectName": "<project name>",
+        "testFramework": "<testing framework if applicable>"
+      },
+      "purpose": "Establish robust testing practices to ensure ongoing stability and reliability of the project.",
+      "target": "junior",
+      "when": "testing",
+      "guidance": "Include step-by-step instructions and examples. Ensure the testing process is well-documented and easy to follow."
+    },
+    {
+      "scenario": "Progress and Documentation Update",
+      "prompt": "Provide detailed instructions for updating the README.md as project {{projectName}} evolves. The README.md should reflect completed tasks (with check-offs), list remaining tasks or milestones, and indicate where key components (like tests and documentation) are located. Ensure it is updated after each major change or milestone.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Maintain an up-to-date roadmap of the project that clearly shows progress and next steps.",
+      "target": "junior",
+      "when": "progress",
+      "guidance": "Encourage regular updates. Verify that the documentation accurately reflects both the completed work and upcoming tasks."
+    },
+    {
+      "scenario": "Effective Use of NOTES.md",
+      "prompt": "Instruct on using the NOTES.md file effectively for project {{projectName}}. The file should record the rationale behind selected build patterns, document any issues along with detailed explanations of their causes and resolutions, and capture key insights or lessons learned. Provide a suggested format for consistency.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Capture critical contextual details and decision rationales for future reference and troubleshooting.",
+      "target": "junior",
+      "when": "documentation",
+      "guidance": "Propose a structured format (e.g., sections for 'Issue', 'Cause', 'Resolution', and 'Lessons Learned') to ensure clarity and consistency."
+    },
+    {
+      "scenario": "Validation After Code Changes",
+      "prompt": "After each code change or milestone in project {{projectName}}, run the relevant tests and record the results. Update the README.md to mark completed tasks and the NOTES.md to log any issues or decisions made. Provide a brief summary report and confirm that the changes meet project requirements.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Ensure continuous quality control through regular validation and documentation of code changes.",
+      "target": "senior",
+      "when": "review",
+      "guidance": "Make sure all changes are accompanied by test results and a summary report that highlights both successes and areas needing improvement."
+    },
+    {
+      "scenario": "Milestone Review and Next Steps",
+      "prompt": "When a major milestone is reached in project {{projectName}}, summarize the accomplishments and update the README.md with a milestone review. Additionally, document any challenges or key learnings in the NOTES.md and outline the next set of tasks or improvements based on the project’s current state.",
+      "vars": {
+        "projectName": "<project name>",
+        "milestone": "<milestone identifier>"
+      },
+      "purpose": "Facilitate a clear review of progress and plan subsequent phases effectively.",
+      "target": "senior",
+      "when": "milestone",
+      "guidance": "Focus on a concise summary of achievements and challenges. Use this review to set realistic next steps."
+    },
+    {
+      "scenario": "Final Project Review and Wrap-Up",
+      "prompt": "For the final review of project {{projectName}}, verify that the README.md accurately reflects all completed milestones and any outstanding tasks, and ensure that the NOTES.md contains comprehensive documentation of build patterns, issues, decisions, and solutions. Provide final feedback and recommendations for future improvements.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Conduct a comprehensive retrospective to document lessons learned and guide future projects.",
+      "target": "senior",
+      "when": "final",
+      "guidance": "Review all documentation thoroughly. Ensure that all aspects of the project are captured and provide actionable recommendations for improvement."
+    },
+    {
+      "scenario": "Requesting Clarification on Ambiguous Requirements",
+      "prompt": "If any sections of the README.md for project {{projectName}} are ambiguous or unclear, identify these sections and generate a list of specific questions or clarifications that need to be addressed. Propose possible interpretations where applicable.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Clarify vague or incomplete requirements to ensure the project plan is based on well-defined expectations.",
+      "target": "senior",
+      "when": "clarification",
+      "guidance": "Review the document for any ambiguous wording or missing details. Formulate precise questions to resolve these uncertainties."
+    },
+    {
+      "scenario": "Analyzing Missing Dependencies or Requirements",
+      "prompt": "Analyze the README.md for project {{projectName}} and identify any dependencies or requirements that appear incomplete or missing. Generate a list of open questions regarding these dependencies and suggest potential sources for resolving them.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Ensure that all necessary dependencies and requirements are clearly identified and addressed.",
+      "target": "senior",
+      "when": "dependency",
+      "guidance": "Cross-reference configuration files and existing documentation to spot gaps. List detailed questions for further clarification."
+    },
+    {
+      "scenario": "Defining External Integrations",
+      "prompt": "For project {{projectName}}, if integration with external systems or services is mentioned, outline the necessary API endpoints, authentication methods, and error handling strategies. Highlight any areas that need further input or clarification regarding external dependencies.",
+      "vars": {
+        "projectName": "<project name>",
+        "externalSystems": "<list external systems if applicable>"
+      },
+      "purpose": "Define integration points with external systems clearly to prevent future issues.",
+      "target": "senior",
+      "when": "integration",
+      "guidance": "Detail the communication protocols and error management strategies. Flag any uncertainties for follow-up."
+    },
+    {
+      "scenario": "Handling Technical Obstacles",
+      "prompt": "Document any unexpected technical obstacles encountered during the development of project {{projectName}}. Include error messages, steps taken to troubleshoot, and proposed solutions. If these obstacles require adjustments to the project plan or dependencies, outline the necessary changes.",
+      "vars": {
+        "projectName": "<project name>",
+        "errorDescription": "<detailed error description>"
+      },
+      "purpose": "Capture and address unforeseen technical issues to improve future planning and troubleshooting.",
+      "target": "junior",
+      "when": "obstacle",
+      "guidance": "Provide a detailed account of the issue, including error logs and troubleshooting steps. Ensure that any changes to the project plan are clearly documented."
+    },
+    {
+      "scenario": "Addressing Performance and Scalability Concerns",
+      "prompt": "Outline any performance or scalability concerns identified during the planning or early development of project {{projectName}}. Provide strategies to mitigate these concerns, including potential load testing scenarios, optimization techniques, and any additional resources needed.",
+      "vars": {
+        "projectName": "<project name>",
+        "concerns": "<list of performance concerns>"
+      },
+      "purpose": "Proactively address potential performance issues to ensure the project can scale efficiently.",
+      "target": "senior",
+      "when": "performance",
+      "guidance": "Identify specific areas of concern and propose actionable solutions. Include references to load testing and optimization best practices."
+    },
+    {
+      "scenario": "Ensuring Code Quality and Standards",
+      "prompt": "Provide guidelines for maintaining high code quality and adhering to coding style standards in project {{projectName}}. Include recommendations for linting tools, formatting rules, and a process for regular code reviews. Suggest any training or resources that might help the team uphold these standards.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Establish best practices for code quality and consistency, which are essential for long-term maintainability.",
+      "target": "senior",
+      "when": "quality",
+      "guidance": "Recommend specific tools and practices for code reviews and linting. Emphasize the importance of regular training and adherence to style guides."
+    },
+    {
+      "scenario": "Managing Version Control",
+      "prompt": "Outline a strategy for managing version control in project {{projectName}}, including handling merge conflicts, branch management, and version tagging. Provide clear guidelines on using tools like Git and describe the process for conducting code reviews before merging changes.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Ensure effective version control management to maintain a clean code history and minimize conflicts.",
+      "target": "senior",
+      "when": "versioning",
+      "guidance": "Detail best practices for branching, merging, and tagging. Include steps for resolving conflicts and conducting thorough code reviews."
+    },
+    {
+      "scenario": "Developing a Contingency Plan",
+      "prompt": "Develop a contingency plan for project {{projectName}}. This should include rollback procedures for failed deployments, backup strategies, and guidelines for restoring previous versions in case of critical failures. Specify how these procedures will be communicated within the team.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Prepare for potential failures by establishing clear rollback and recovery procedures, ensuring project stability.",
+      "target": "senior",
+      "when": "contingency",
+      "guidance": "Outline clear, step-by-step procedures for rollbacks and backups. Emphasize the need for communication and regular testing of these contingency measures."
+    },
+    {
+      "scenario": "Maintaining Documentation Consistency",
+      "prompt": "Implement a process to ensure that all documentation for project {{projectName}}, including the README.md and NOTES.md, remains consistent with the current state of the project. Outline steps for periodic reviews, version updates, and synchronization between the codebase and documentation. Describe actions to take if discrepancies are found.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Ensure that documentation is accurate and up-to-date with the evolving project.",
+      "target": "senior",
+      "when": "doccheck",
+      "guidance": "Establish a regular review schedule for documentation. Ensure that updates to the codebase trigger a corresponding documentation review."
+    },
+    {
+      "scenario": "Integrating User or Stakeholder Feedback",
+      "prompt": "If project {{projectName}} receives user or stakeholder feedback during development, document the feedback in detail. Propose iterative improvements to the project plan based on this feedback, and suggest adjustments to the existing milestones as necessary. Include a plan for integrating this feedback into the workflow.",
+      "vars": {
+        "projectName": "<project name>",
+        "feedbackSummary": "<summary of feedback>"
+      },
+      "purpose": "Systematically incorporate external feedback into the project, ensuring iterative improvements.",
+      "target": "senior",
+      "when": "feedback",
+      "guidance": "Document feedback clearly and propose actionable changes. Ensure that the feedback loop is integrated into the regular planning process."
+    },
+    {
+      "scenario": "Resolving Dependency Conflicts",
+      "prompt": "Analyze project {{projectName}} for any potential conflicts between different dependency versions specified in the README.md or configuration files. Provide recommendations for resolving these conflicts and detail the steps necessary to ensure compatibility across all modules.",
+      "vars": {
+        "projectName": "<project name>"
+      },
+      "purpose": "Identify and resolve dependency conflicts early to ensure smooth integration across the project.",
+      "target": "senior",
+      "when": "dependencyConflict",
+      "guidance": "Review all dependency configurations and cross-check version requirements. Provide clear recommendations for harmonizing dependencies."
+    },
+    {
+      "scenario": "Addressing Security and Compliance Requirements",
+      "prompt": "Identify and document any security or compliance requirements mentioned in the README.md for project {{projectName}}. Outline the necessary measures to ensure data protection, secure coding practices, and adherence to regulatory standards. Specify any areas requiring further investigation.",
+      "vars": {
+        "projectName": "<project name>",
+        "complianceStandards": "<applicable standards>"
+      },
+      "purpose": "Ensure that security and compliance considerations are integrated into the project plan.",
+      "target": "senior",
+      "when": "security",
+      "guidance": "Detail the required security measures and compliance checks. Highlight any uncertainties that need further research or expert input."
+    }
+  ]
+}
