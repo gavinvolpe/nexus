@@ -20,9 +20,9 @@
 package impl
 
 import (
-	"encoding/json"
 	"time"
 
+	"github.com/bytedance/sonic"
 	"github.com/google/uuid"
 )
 
@@ -49,7 +49,7 @@ func NewBase() Base {
 // Serialization helpers
 func (b *Base) MarshalJSON() ([]byte, error) {
 	type Alias Base
-	return json.Marshal(&struct {
+	return sonic.Marshal(&struct {
 		*Alias
 	}{
 		Alias: (*Alias)(b),
@@ -63,7 +63,7 @@ func (b *Base) UnmarshalJSON(data []byte) error {
 	}{
 		Alias: (*Alias)(b),
 	}
-	if err := json.Unmarshal(data, &aux); err != nil {
+	if err := sonic.Unmarshal(data, &aux); err != nil {
 		return err
 	}
 	return nil

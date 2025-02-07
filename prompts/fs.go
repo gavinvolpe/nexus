@@ -21,12 +21,12 @@ package prompts
 
 import (
 	"embed"
-	"encoding/json"
 	"fmt"
 	"io/fs"
 	"strings"
 	"sync"
 
+	"github.com/bytedance/sonic/decoder"
 	"github.com/gavinvolpe/nexus/pkg/impl"
 )
 
@@ -112,7 +112,7 @@ func (pfs *PromptFS) loadPromptFile(filePath string) (*impl.Prompt, PromptMetada
 		Metadata PromptMetadata `json:"metadata"`
 	}
 
-	if err := json.NewDecoder(file).Decode(&data); err != nil {
+	if err := decoder.NewStreamDecoder(file).Decode(&data); err != nil {
 		return nil, PromptMetadata{}, err
 	}
 

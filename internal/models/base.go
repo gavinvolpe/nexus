@@ -51,12 +51,12 @@ const (
 
 // Message represents a single message in the conversation
 type Message struct {
-	Role         ModelRole         `json:"role"`
-	Content      string           `json:"content"`
-	Name         string           `json:"name,omitempty"`
-	FunctionCall *FunctionCall    `json:"function_call,omitempty"`
-	ToolCalls    []ToolCall       `json:"tool_calls,omitempty"`
-	ToolCallID   string           `json:"tool_call_id,omitempty"`
+	Role         ModelRole     `json:"role"`
+	Content      string        `json:"content"`
+	Name         string        `json:"name,omitempty"`
+	FunctionCall *FunctionCall `json:"function_call,omitempty"`
+	ToolCalls    []ToolCall    `json:"tool_calls,omitempty"`
+	ToolCallID   string        `json:"tool_call_id,omitempty"`
 }
 
 // FunctionCall represents a function call in the conversation
@@ -67,31 +67,31 @@ type FunctionCall struct {
 
 // ToolCall represents a tool call in the conversation
 type ToolCall struct {
-	ID       string          `json:"id"`
-	Type     string          `json:"type"`
-	Function FunctionCall    `json:"function"`
+	ID       string       `json:"id"`
+	Type     string       `json:"type"`
+	Function FunctionCall `json:"function"`
 }
 
 // ModelConfig represents the configuration for an AI model
 type ModelConfig struct {
-	Provider          ModelProvider     `json:"provider"`
-	ModelID           string           `json:"model_id"`
-	BaseEndpoint      string           `json:"base_endpoint"`
-	APIKey            string           `json:"api_key,omitempty"`  // Optional for Ollama
-	OrgID             string           `json:"org_id,omitempty"`
-	Temperature       float32          `json:"temperature"`
-	MaxTokens         int              `json:"max_tokens"`
-	TopP             float32          `json:"top_p"`
-	FrequencyPenalty float32          `json:"frequency_penalty"`
-	PresencePenalty  float32          `json:"presence_penalty"`
-	Stop             []string         `json:"stop,omitempty"`
-	HTTPClient       *http.Client     `json:"-"`
-	Headers          http.Header      `json:"-"`
-	Timeout          time.Duration    `json:"-"`
-	RetryConfig      *RetryConfig    `json:"-"`
+	Provider         ModelProvider `json:"provider"`
+	ModelID          string        `json:"model_id"`
+	BaseEndpoint     string        `json:"base_endpoint"`
+	APIKey           string        `json:"api_key,omitempty"` // Optional for Ollama
+	OrgID            string        `json:"org_id,omitempty"`
+	Temperature      float32       `json:"temperature"`
+	MaxTokens        int           `json:"max_tokens"`
+	TopP             float32       `json:"top_p"`
+	FrequencyPenalty float32       `json:"frequency_penalty"`
+	PresencePenalty  float32       `json:"presence_penalty"`
+	Stop             []string      `json:"stop,omitempty"`
+	HTTPClient       *http.Client  `json:"-"`
+	Headers          http.Header   `json:"-"`
+	Timeout          time.Duration `json:"-"`
+	RetryConfig      *RetryConfig  `json:"-"`
 	// Ollama specific options
-	Format           string           `json:"format,omitempty"`    // For Ollama: json or text
-	Options          map[string]any   `json:"options,omitempty"`   // Provider-specific options
+	Format  string         `json:"format,omitempty"`  // For Ollama: json or text
+	Options map[string]any `json:"options,omitempty"` // Provider-specific options
 }
 
 // RetryConfig represents retry configuration
@@ -104,19 +104,19 @@ type RetryConfig struct {
 
 // ModelResponse represents the response from an AI model
 type ModelResponse struct {
-	ID                string    `json:"id"`
-	Created          int64     `json:"created"`
-	Model            string    `json:"model"`
-	SystemFingerprint string    `json:"system_fingerprint,omitempty"`
-	Choices          []Choice  `json:"choices"`
-	Usage            Usage     `json:"usage"`
+	ID                string   `json:"id"`
+	Created           int64    `json:"created"`
+	Model             string   `json:"model"`
+	SystemFingerprint string   `json:"system_fingerprint,omitempty"`
+	Choices           []Choice `json:"choices"`
+	Usage             Usage    `json:"usage"`
 }
 
 // Choice represents a single choice in the model response
 type Choice struct {
-	Index        int      `json:"index"`
-	Message      Message  `json:"message"`
-	FinishReason string   `json:"finish_reason"`
+	Index        int     `json:"index"`
+	Message      Message `json:"message"`
+	FinishReason string  `json:"finish_reason"`
 }
 
 // Usage represents token usage information
@@ -131,19 +131,19 @@ type IModel interface {
 	// Core methods
 	Complete(ctx context.Context, messages []Message) (*ModelResponse, error)
 	Stream(ctx context.Context, messages []Message) (<-chan ModelResponse, error)
-	
+
 	// Configuration
 	GetConfig() ModelConfig
 	UpdateConfig(config ModelConfig) error
-	
+
 	// Token management
 	CountTokens(messages []Message) (int, error)
 	ValidateTokenCount(messages []Message) error
-	
+
 	// Function/Tool calling
 	RegisterFunction(name string, parameters interface{}) error
 	RegisterTool(name string, parameters interface{}) error
-	
+
 	// Error handling and retry logic
 	WithRetry(config RetryConfig) IModel
 	WithTimeout(timeout time.Duration) IModel
@@ -266,8 +266,8 @@ func (m *BaseModel) RegisterTool(name string, parameters interface{}) error {
 // DefaultConfig returns a default model configuration
 func DefaultConfig() ModelConfig {
 	return ModelConfig{
-		Provider:          OpenAI,
-		Temperature:       0.7,
+		Provider:         OpenAI,
+		Temperature:      0.7,
 		MaxTokens:        2000,
 		TopP:             1.0,
 		FrequencyPenalty: 0.0,

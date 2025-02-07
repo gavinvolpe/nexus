@@ -26,6 +26,7 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/bytedance/sonic"
 	"github.com/gorilla/websocket"
 )
 
@@ -36,7 +37,7 @@ type Client struct {
 	capabilities ClientCapabilities
 	handlers     map[MCPMethod]HandlerFunc
 	responses    map[interface{}]chan *MCPMessage
-	mu          sync.RWMutex
+	mu           sync.RWMutex
 }
 
 // NewClient creates a new MCP client
@@ -66,7 +67,7 @@ func (c *Client) Initialize(ctx context.Context, rootURI string) (*ServerCapabil
 		Capabilities: c.capabilities,
 	}
 
-	paramsBytes, err := json.Marshal(params)
+	paramsBytes, err := sonic.Marshal(params)
 	if err != nil {
 		return nil, fmt.Errorf("error marshaling params: %w", err)
 	}
@@ -79,7 +80,7 @@ func (c *Client) Initialize(ctx context.Context, rootURI string) (*ServerCapabil
 	var result struct {
 		Capabilities ServerCapabilities `json:"capabilities"`
 	}
-	if err := json.Unmarshal(response.Result, &result); err != nil {
+	if err := sonic.Unmarshal(response.Result, &result); err != nil {
 		return nil, fmt.Errorf("error unmarshaling server capabilities: %w", err)
 	}
 
@@ -101,7 +102,7 @@ func (c *Client) ListTools(ctx context.Context) ([]Tool, error) {
 	var result struct {
 		Tools []Tool `json:"tools"`
 	}
-	if err := json.Unmarshal(response.Result, &result); err != nil {
+	if err := sonic.Unmarshal(response.Result, &result); err != nil {
 		return nil, fmt.Errorf("error unmarshaling tools list: %w", err)
 	}
 
@@ -110,7 +111,7 @@ func (c *Client) ListTools(ctx context.Context) ([]Tool, error) {
 
 // CallTool calls a tool on the server
 func (c *Client) CallTool(ctx context.Context, name string, arguments interface{}) (json.RawMessage, error) {
-	argsBytes, err := json.Marshal(arguments)
+	argsBytes, err := sonic.Marshal(arguments)
 	if err != nil {
 		return nil, fmt.Errorf("error marshaling arguments: %w", err)
 	}
@@ -120,7 +121,7 @@ func (c *Client) CallTool(ctx context.Context, name string, arguments interface{
 		Arguments: argsBytes,
 	}
 
-	paramsBytes, err := json.Marshal(params)
+	paramsBytes, err := sonic.Marshal(params)
 	if err != nil {
 		return nil, fmt.Errorf("error marshaling params: %w", err)
 	}

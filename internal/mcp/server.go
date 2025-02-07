@@ -28,6 +28,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/bytedance/sonic"
 	"github.com/gorilla/websocket"
 )
 
@@ -181,7 +182,7 @@ func (s *Server) sendError(conn *websocket.Conn, id interface{}, code int, messa
 // Handler implementations
 func (s *Server) handleInitialize(ctx context.Context, msg *MCPMessage) (*MCPMessage, error) {
 	var params InitializeParams
-	if err := json.Unmarshal(msg.Params, &params); err != nil {
+	if err := sonic.Unmarshal(msg.Params, &params); err != nil {
 		return nil, fmt.Errorf("invalid initialize params: %w", err)
 	}
 
@@ -234,7 +235,7 @@ func (s *Server) handleToolsList(ctx context.Context, msg *MCPMessage) (*MCPMess
 	}
 	s.mu.RUnlock()
 
-	result, err := json.Marshal(map[string]interface{}{
+	result, err := sonic.Marshal(map[string]interface{}{
 		"tools": tools,
 	})
 	if err != nil {
@@ -250,7 +251,7 @@ func (s *Server) handleToolsList(ctx context.Context, msg *MCPMessage) (*MCPMess
 
 func (s *Server) handleToolsCall(ctx context.Context, msg *MCPMessage) (*MCPMessage, error) {
 	var params ToolCallParams
-	if err := json.Unmarshal(msg.Params, &params); err != nil {
+	if err := sonic.Unmarshal(msg.Params, &params); err != nil {
 		return nil, fmt.Errorf("invalid tool call params: %w", err)
 	}
 
@@ -280,7 +281,7 @@ func (s *Server) handleResourcesList(ctx context.Context, msg *MCPMessage) (*MCP
 	}
 	s.mu.RUnlock()
 
-	result, err := json.Marshal(map[string]interface{}{
+	result, err := sonic.Marshal(map[string]interface{}{
 		"resources": resources,
 	})
 	if err != nil {
@@ -298,7 +299,7 @@ func (s *Server) handleResourcesRead(ctx context.Context, msg *MCPMessage) (*MCP
 	var params struct {
 		URI string `json:"uri"`
 	}
-	if err := json.Unmarshal(msg.Params, &params); err != nil {
+	if err := sonic.Unmarshal(msg.Params, &params); err != nil {
 		return nil, fmt.Errorf("invalid resource read params: %w", err)
 	}
 
@@ -310,7 +311,7 @@ func (s *Server) handleResourcesRead(ctx context.Context, msg *MCPMessage) (*MCP
 		return nil, fmt.Errorf("resource %s not found", params.URI)
 	}
 
-	result, err := json.Marshal(map[string]interface{}{
+	result, err := sonic.Marshal(map[string]interface{}{
 		"resource": resource,
 	})
 	if err != nil {
@@ -329,7 +330,7 @@ func (s *Server) handleResourcesWrite(ctx context.Context, msg *MCPMessage) (*MC
 		URI     string      `json:"uri"`
 		Content interface{} `json:"content"`
 	}
-	if err := json.Unmarshal(msg.Params, &params); err != nil {
+	if err := sonic.Unmarshal(msg.Params, &params); err != nil {
 		return nil, fmt.Errorf("invalid resource write params: %w", err)
 	}
 
@@ -357,7 +358,7 @@ func (s *Server) handlePromptsList(ctx context.Context, msg *MCPMessage) (*MCPMe
 	}
 	s.mu.RUnlock()
 
-	result, err := json.Marshal(map[string]interface{}{
+	result, err := sonic.Marshal(map[string]interface{}{
 		"prompts": prompts,
 	})
 	if err != nil {
@@ -376,7 +377,7 @@ func (s *Server) handlePromptsRender(ctx context.Context, msg *MCPMessage) (*MCP
 		Name      string                 `json:"name"`
 		Variables map[string]interface{} `json:"variables"`
 	}
-	if err := json.Unmarshal(msg.Params, &params); err != nil {
+	if err := sonic.Unmarshal(msg.Params, &params); err != nil {
 		return nil, fmt.Errorf("invalid prompt render params: %w", err)
 	}
 
@@ -394,7 +395,7 @@ func (s *Server) handlePromptsRender(ctx context.Context, msg *MCPMessage) (*MCP
 		rendered = strings.ReplaceAll(rendered, "{{"+key+"}}", fmt.Sprintf("%v", value))
 	}
 
-	result, err := json.Marshal(map[string]interface{}{
+	result, err := sonic.Marshal(map[string]interface{}{
 		"rendered": rendered,
 	})
 	if err != nil {
