@@ -1,5 +1,12 @@
 # Nexus: Universal Access Pattern Framework
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/gavinvolpe/nexus)](https://goreportcard.com/report/github.com/gavinvolpe/nexus)
+[![GoDoc](https://godoc.org/github.com/gavinvolpe/nexus?status.svg)](https://godoc.org/github.com/gavinvolpe/nexus)
+[![Build Status](https://github.com/gavinvolpe/nexus/workflows/CI/badge.svg)](https://github.com/gavinvolpe/nexus/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A powerful Go framework that provides universal access patterns for connecting and managing diverse resources, from AI models to tools and prompts. It implements the Model Context Protocol (MCP) to enable seamless interaction between different AI models and tools.
+
 Nexus is a powerful Go framework that provides universal access patterns for connecting and managing diverse resources, from AI models to tools and prompts. It implements the Model Context Protocol (MCP) to enable seamless interaction between different AI models and tools.
 
 ## 🌟 Key Features
@@ -51,6 +58,20 @@ go get github.com/gavinvolpe/nexus
 - [Components](COMPONENTS.md): Detailed component documentation
 - [Notes](NOTES.md): Development notes and change log
 - [API Reference](https://pkg.go.dev/github.com/gavinvolpe/nexus)
+- [Contributing Guidelines](CONTRIBUTING.md): How to contribute to the project
+- [Code of Conduct](CODE_OF_CONDUCT.md): Our community standards
+
+### Configuration
+
+Nexus can be configured through environment variables or a configuration file. See our [configuration guide](docs/configuration.md) for details.
+
+### Examples
+
+Check out our [examples directory](examples/) for complete working examples of:
+- Basic MCP server setup
+- Custom tool integration
+- Multi-model orchestration
+- Prompt management
 
 ## 🔧 Project Structure
 
